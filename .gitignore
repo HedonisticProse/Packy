@@ -1,0 +1,8 @@
+# User Folder
+/User
+
+# JUST tool file
+justfile
+
+# The Claude Code File
+CLAUDE.md
