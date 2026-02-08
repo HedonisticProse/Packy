@@ -1,0 +1,59 @@
+{
+    "meta": {
+        "version": "1.0.0",
+        "templateName": "Weekend Getaway",
+        "description": "Perfect for 2-3 day trips",
+        "author": "Packy Team",
+        "isTemplate": true
+    },
+    "bags": [
+        { "id": "carry-on-1", "name": "Carry-On", "type": "carry-on", "color": "#65b8e0", "icon": "suitcase" },
+        { "id": "personal-1", "name": "Personal Item", "type": "personal-item", "color": "#f6bc56", "icon": "bag" }
+    ],
+    "categories": [
+        { "id": "clothing", "name": "Clothing", "icon": "shirt", "defaultBagId": "carry-on-1" },
+        { "id": "toiletries", "name": "Toiletries", "icon": "soap", "defaultBagId": "personal-1" },
+        { "id": "electronics", "name": "Electronics", "icon": "laptop", "defaultBagId": "personal-1" },
+        { "id": "documents", "name": "Documents", "icon": "file", "defaultBagId": "personal-1" },
+        { "id": "medical", "name": "Medical", "icon": "pills", "defaultBagId": "personal-1" }
+    ],
+    "items": [
+        { "id": "item-1", "name": "T-Shirts", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d", "bagId": null },
+        { "id": "item-2", "name": "Underwear", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d+1", "bagId": null },
+        { "id": "item-3", "name": "Socks (pairs)", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d+1", "bagId": null },
+        { "id": "item-4", "name": "Pants/Shorts", "categoryId": "clothing", "quantityType": "fixed", "quantity": 2, "bagId": null },
+        { "id": "item-5", "name": "Sleepwear", "categoryId": "clothing", "quantityType": "single", "bagId": null },
+        { "id": "item-6", "name": "Jacket/Sweater", "categoryId": "clothing", "quantityType": "single", "bagId": null },
+        { "id": "item-7", "name": "Toothbrush", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-8", "name": "Toothpaste", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-9", "name": "Deodorant", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-10", "name": "Shampoo", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-11", "name": "Phone Charger", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-12", "name": "Headphones", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-13", "name": "ID/Driver's License", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-14", "name": "Credit Card", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-15", "name": "Daily Medications", "categoryId": "medical", "quantityType": "dependent", "quantityExpression": "d+2", "bagId": null }
+    ],
+    "stages": [
+        {
+            "id": "stage-1",
+            "name": "Night Before",
+            "order": 1,
+            "tasks": [
+                { "id": "task-1", "description": "Pack all clothes in carry-on", "completed": false },
+                { "id": "task-2", "description": "Charge phone and headphones", "completed": false },
+                { "id": "task-3", "description": "Check weather forecast for destination", "completed": false }
+            ]
+        },
+        {
+            "id": "stage-2",
+            "name": "Morning Of",
+            "order": 2,
+            "tasks": [
+                { "id": "task-4", "description": "Pack toiletries (used this morning)", "completed": false },
+                { "id": "task-5", "description": "Add phone charger to bag", "completed": false },
+                { "id": "task-6", "description": "Double-check ID and wallet", "completed": false }
+            ]
+        }
+    ]
+}

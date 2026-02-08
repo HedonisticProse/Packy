@@ -1,0 +1,115 @@
+{
+    "meta": {
+        "version": "1.0.0",
+        "templateName": "International Vacation",
+        "description": "Extended international travel",
+        "author": "Packy Team",
+        "isTemplate": true
+    },
+    "bags": [
+        { "id": "checked-1", "name": "Checked Bag", "type": "checked", "color": "#65b8e0", "icon": "luggage" },
+        { "id": "carry-on-1", "name": "Carry-On", "type": "carry-on", "color": "#f6bc56", "icon": "suitcase" },
+        { "id": "personal-1", "name": "Personal Item", "type": "personal-item", "color": "#e87a45", "icon": "backpack" }
+    ],
+    "categories": [
+        { "id": "clothing", "name": "Clothing", "icon": "shirt", "defaultBagId": "checked-1" },
+        { "id": "shoes", "name": "Shoes", "icon": "shoe", "defaultBagId": "checked-1" },
+        { "id": "toiletries", "name": "Toiletries", "icon": "soap", "defaultBagId": "checked-1" },
+        { "id": "electronics", "name": "Electronics", "icon": "laptop", "defaultBagId": "carry-on-1" },
+        { "id": "documents", "name": "Documents", "icon": "file", "defaultBagId": "personal-1" },
+        { "id": "medical", "name": "Medical", "icon": "pills", "defaultBagId": "carry-on-1" },
+        { "id": "travel-comfort", "name": "Travel Comfort", "icon": "pillow", "defaultBagId": "carry-on-1" },
+        { "id": "accessories", "name": "Accessories", "icon": "watch", "defaultBagId": "checked-1" }
+    ],
+    "items": [
+        { "id": "item-1", "name": "T-Shirts", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d", "bagId": null },
+        { "id": "item-2", "name": "Underwear", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d+2", "bagId": null },
+        { "id": "item-3", "name": "Socks (pairs)", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d+2", "bagId": null },
+        { "id": "item-4", "name": "Pants/Jeans", "categoryId": "clothing", "quantityType": "fixed", "quantity": 3, "bagId": null },
+        { "id": "item-5", "name": "Shorts", "categoryId": "clothing", "quantityType": "fixed", "quantity": 2, "bagId": null },
+        { "id": "item-6", "name": "Sleepwear", "categoryId": "clothing", "quantityType": "fixed", "quantity": 2, "bagId": null },
+        { "id": "item-7", "name": "Jacket/Coat", "categoryId": "clothing", "quantityType": "single", "bagId": null },
+        { "id": "item-8", "name": "Sweater/Hoodie", "categoryId": "clothing", "quantityType": "fixed", "quantity": 2, "bagId": null },
+        { "id": "item-9", "name": "Swimsuit", "categoryId": "clothing", "quantityType": "single", "bagId": null },
+        { "id": "item-10", "name": "Dress Outfit", "categoryId": "clothing", "quantityType": "single", "bagId": null },
+        { "id": "item-11", "name": "Walking Shoes", "categoryId": "shoes", "quantityType": "single", "bagId": null },
+        { "id": "item-12", "name": "Sandals/Flip-flops", "categoryId": "shoes", "quantityType": "single", "bagId": null },
+        { "id": "item-13", "name": "Dress Shoes", "categoryId": "shoes", "quantityType": "single", "bagId": null },
+        { "id": "item-14", "name": "Toothbrush", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-15", "name": "Toothpaste", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-16", "name": "Shampoo/Conditioner", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-17", "name": "Body Wash", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-18", "name": "Deodorant", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-19", "name": "Sunscreen", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-20", "name": "Razor/Shaving Kit", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-21", "name": "Hairbrush/Comb", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-22", "name": "Phone", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-23", "name": "Phone Charger", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-24", "name": "Camera", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-25", "name": "Camera Charger", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-26", "name": "Power Adapter", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-27", "name": "Portable Charger", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-28", "name": "Headphones", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-29", "name": "Tablet/E-reader", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-30", "name": "Passport", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-31", "name": "Visa (if required)", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-32", "name": "Travel Insurance Docs", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-33", "name": "Flight Itinerary", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-34", "name": "Hotel Confirmations", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-35", "name": "Credit Cards", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-36", "name": "Cash (local currency)", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-37", "name": "Emergency Contacts", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-38", "name": "Daily Medications", "categoryId": "medical", "quantityType": "dependent", "quantityExpression": "d+5", "bagId": null },
+        { "id": "item-39", "name": "Pain Relievers", "categoryId": "medical", "quantityType": "single", "bagId": null },
+        { "id": "item-40", "name": "Motion Sickness Meds", "categoryId": "medical", "quantityType": "single", "bagId": null },
+        { "id": "item-41", "name": "First Aid Kit", "categoryId": "medical", "quantityType": "single", "bagId": null },
+        { "id": "item-42", "name": "Neck Pillow", "categoryId": "travel-comfort", "quantityType": "single", "bagId": null },
+        { "id": "item-43", "name": "Eye Mask", "categoryId": "travel-comfort", "quantityType": "single", "bagId": null },
+        { "id": "item-44", "name": "Earplugs", "categoryId": "travel-comfort", "quantityType": "single", "bagId": null },
+        { "id": "item-45", "name": "Compression Socks", "categoryId": "travel-comfort", "quantityType": "single", "bagId": null },
+        { "id": "item-46", "name": "Sunglasses", "categoryId": "accessories", "quantityType": "single", "bagId": null },
+        { "id": "item-47", "name": "Hat", "categoryId": "accessories", "quantityType": "single", "bagId": null },
+        { "id": "item-48", "name": "Watch", "categoryId": "accessories", "quantityType": "single", "bagId": null },
+        { "id": "item-49", "name": "Day Bag/Backpack", "categoryId": "accessories", "quantityType": "single", "bagId": null }
+    ],
+    "stages": [
+        {
+            "id": "stage-1",
+            "name": "Week Before",
+            "order": 0,
+            "tasks": [
+                { "id": "task-0a", "description": "Confirm passport is valid (6+ months)", "completed": false },
+                { "id": "task-0b", "description": "Check visa requirements", "completed": false },
+                { "id": "task-0c", "description": "Notify bank of travel dates", "completed": false },
+                { "id": "task-0d", "description": "Arrange pet/plant care", "completed": false },
+                { "id": "task-0e", "description": "Download offline maps", "completed": false }
+            ]
+        },
+        {
+            "id": "stage-2",
+            "name": "Night Before",
+            "order": 1,
+            "tasks": [
+                { "id": "task-1", "description": "Pack checked bag", "completed": false },
+                { "id": "task-2", "description": "Weigh luggage (check airline limits)", "completed": false },
+                { "id": "task-3", "description": "Charge all devices", "completed": false },
+                { "id": "task-4", "description": "Print/save boarding passes", "completed": false },
+                { "id": "task-5", "description": "Pack carry-on essentials", "completed": false },
+                { "id": "task-6", "description": "Set home security/lights", "completed": false }
+            ]
+        },
+        {
+            "id": "stage-3",
+            "name": "Morning Of",
+            "order": 2,
+            "tasks": [
+                { "id": "task-7", "description": "Pack toiletries", "completed": false },
+                { "id": "task-8", "description": "Triple-check passport and documents", "completed": false },
+                { "id": "task-9", "description": "Empty refrigerator of perishables", "completed": false },
+                { "id": "task-10", "description": "Take out trash", "completed": false },
+                { "id": "task-11", "description": "Lock all doors and windows", "completed": false },
+                { "id": "task-12", "description": "Unplug unnecessary electronics", "completed": false }
+            ]
+        }
+    ]
+}

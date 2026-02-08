@@ -1,0 +1,73 @@
+{
+    "meta": {
+        "version": "1.0.0",
+        "templateName": "Business Trip",
+        "description": "Professional travel essentials",
+        "author": "Packy Team",
+        "isTemplate": true
+    },
+    "bags": [
+        { "id": "carry-on-1", "name": "Carry-On", "type": "carry-on", "color": "#215b90", "icon": "suitcase" },
+        { "id": "laptop-bag", "name": "Laptop Bag", "type": "personal-item", "color": "#967633", "icon": "briefcase" }
+    ],
+    "categories": [
+        { "id": "clothing", "name": "Clothing", "icon": "shirt", "defaultBagId": "carry-on-1" },
+        { "id": "business-attire", "name": "Business Attire", "icon": "tie", "defaultBagId": "carry-on-1" },
+        { "id": "toiletries", "name": "Toiletries", "icon": "soap", "defaultBagId": "carry-on-1" },
+        { "id": "electronics", "name": "Electronics", "icon": "laptop", "defaultBagId": "laptop-bag" },
+        { "id": "documents", "name": "Documents", "icon": "file", "defaultBagId": "laptop-bag" },
+        { "id": "medical", "name": "Medical", "icon": "pills", "defaultBagId": "laptop-bag" }
+    ],
+    "items": [
+        { "id": "item-1", "name": "Dress Shirts", "categoryId": "business-attire", "quantityType": "dependent", "quantityExpression": "d", "bagId": null },
+        { "id": "item-2", "name": "Dress Pants/Skirt", "categoryId": "business-attire", "quantityType": "fixed", "quantity": 2, "bagId": null },
+        { "id": "item-3", "name": "Suit Jacket/Blazer", "categoryId": "business-attire", "quantityType": "single", "bagId": null },
+        { "id": "item-4", "name": "Tie/Accessories", "categoryId": "business-attire", "quantityType": "fixed", "quantity": 2, "bagId": null },
+        { "id": "item-5", "name": "Dress Shoes", "categoryId": "business-attire", "quantityType": "single", "bagId": null },
+        { "id": "item-6", "name": "Casual Clothes", "categoryId": "clothing", "quantityType": "fixed", "quantity": 2, "bagId": null },
+        { "id": "item-7", "name": "Underwear", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d+1", "bagId": null },
+        { "id": "item-8", "name": "Socks (pairs)", "categoryId": "clothing", "quantityType": "dependent", "quantityExpression": "d+1", "bagId": null },
+        { "id": "item-9", "name": "Sleepwear", "categoryId": "clothing", "quantityType": "single", "bagId": null },
+        { "id": "item-10", "name": "Toothbrush", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-11", "name": "Toothpaste", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-12", "name": "Deodorant", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-13", "name": "Cologne/Perfume", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-14", "name": "Hair Products", "categoryId": "toiletries", "quantityType": "single", "bagId": null },
+        { "id": "item-15", "name": "Laptop", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-16", "name": "Laptop Charger", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-17", "name": "Phone Charger", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-18", "name": "Portable Charger", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-19", "name": "Headphones", "categoryId": "electronics", "quantityType": "single", "bagId": null },
+        { "id": "item-20", "name": "ID/Driver's License", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-21", "name": "Business Cards", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-22", "name": "Corporate Credit Card", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-23", "name": "Meeting Materials", "categoryId": "documents", "quantityType": "single", "bagId": null },
+        { "id": "item-24", "name": "Daily Medications", "categoryId": "medical", "quantityType": "dependent", "quantityExpression": "d+2", "bagId": null },
+        { "id": "item-25", "name": "Pain Relievers", "categoryId": "medical", "quantityType": "single", "bagId": null }
+    ],
+    "stages": [
+        {
+            "id": "stage-1",
+            "name": "Night Before",
+            "order": 1,
+            "tasks": [
+                { "id": "task-1", "description": "Iron dress shirts", "completed": false },
+                { "id": "task-2", "description": "Pack suit in garment folder", "completed": false },
+                { "id": "task-3", "description": "Charge all devices", "completed": false },
+                { "id": "task-4", "description": "Download offline docs/presentations", "completed": false },
+                { "id": "task-5", "description": "Print boarding pass and hotel confirmation", "completed": false }
+            ]
+        },
+        {
+            "id": "stage-2",
+            "name": "Morning Of",
+            "order": 2,
+            "tasks": [
+                { "id": "task-6", "description": "Pack toiletries", "completed": false },
+                { "id": "task-7", "description": "Final laptop check (charger, files)", "completed": false },
+                { "id": "task-8", "description": "Verify ID and credit cards", "completed": false },
+                { "id": "task-9", "description": "Set out-of-office email", "completed": false }
+            ]
+        }
+    ]
+}

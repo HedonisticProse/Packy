@@ -1,0 +1,37 @@
+{
+    "version": "1.0.0",
+    "templates": [
+        {
+            "id": "weekend-getaway",
+            "name": "Weekend Getaway",
+            "description": "Perfect for 2-3 day trips",
+            "filename": "weekend-getaway.json",
+            "icon": "sun",
+            "tags": ["short", "casual"]
+        },
+        {
+            "id": "business-trip",
+            "name": "Business Trip",
+            "description": "Professional travel essentials",
+            "filename": "business-trip.json",
+            "icon": "briefcase",
+            "tags": ["work", "formal"]
+        },
+        {
+            "id": "international-vacation",
+            "name": "International Vacation",
+            "description": "Extended international travel",
+            "filename": "international-vacation.json",
+            "icon": "plane",
+            "tags": ["long", "international"]
+        },
+        {
+            "id": "camping-trip",
+            "name": "Camping Trip",
+            "description": "Outdoor adventure essentials",
+            "filename": "camping-trip.json",
+            "icon": "tent",
+            "tags": ["outdoor", "adventure"]
+        }
+    ]
+}
