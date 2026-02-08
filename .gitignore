@@ -6,3 +6,6 @@ justfile
 
 # The Claude Code File
 CLAUDE.md
+
+# VS Code Workspaces
+*.code-workspace
