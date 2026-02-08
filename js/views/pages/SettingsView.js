@@ -117,10 +117,10 @@ export class SettingsView {
                 <div class="settings-section">
                     <h3>Links</h3>
                     <div class="settings-links">
-                        <a href="#" class="settings-link" id="github-link">
+                        <a href="https://github.com/HedonisticProse/Packy#" class="settings-link" id="github-link">
                             GitHub Repository
                         </a>
-                        <a href="#" class="settings-link" id="issues-link">
+                        <a href="https://github.com/HedonisticProse/Packy/issues" class="settings-link" id="issues-link">
                             Report an Issue
                         </a>
                     </div>

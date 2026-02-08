@@ -4,7 +4,7 @@ A cute, practical web-based packing assistant for organizing trip lists with les
 
 ![Packy Logo](img/Packy_Logo.png)
 
-Hosted on GitHub Pages: [https://hedonisticprose.github.com/Packy](https://hedonisticprose.github.com/Packy)
+Hosted on GitHub Pages: [https://hedonisticprose.github.io/Packy/](https://hedonisticprose.github.io/Packy/)
 
 **Disclaimer**: *Packy is currently in Open Beta for evaluation. If you encounter any issues or have features you would like to request, please use the Issues Page here to communicate them to me.*
 
