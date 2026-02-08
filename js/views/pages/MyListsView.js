@@ -8,7 +8,7 @@ import * as actions from '../../state/actions.js';
 import { templateService } from '../../services/templateService.js';
 import { fileService } from '../../services/fileService.js';
 import { expressionParser } from '../../services/expressionParser.js';
-import { formatDate, getDateRangeString, getDurationString, getToday, getDateFromToday } from '../../services/dateService.js';
+import { calculateDays, formatDate, getDateRangeString, getDurationString, getToday, getDateFromToday } from '../../services/dateService.js';
 import { $, $$, delegate } from '../../utils/dom.js';
 import { sanitize } from '../../utils/validation.js';
 import { ICONS } from './icons.js';

@@ -40,10 +40,21 @@ class Store {
 
     /**
      * Get current state (deep copy for immutability)
+     * Note: UI state (modal, toast) is not deep cloned to preserve callbacks
      * @returns {Object}
      */
     getState() {
-        return JSON.parse(JSON.stringify(this.state));
+        // Deep clone data state, but preserve UI state references (for callbacks)
+        const clonedData = this.state.currentList
+            ? JSON.parse(JSON.stringify({ currentList: this.state.currentList }))
+            : { currentList: null };
+
+        return {
+            ...clonedData,
+            ui: { ...this.state.ui }, // Shallow copy to preserve onRender callbacks
+            templates: this.state.templates ? [...this.state.templates] : [],
+            settings: this.state.settings ? { ...this.state.settings } : null
+        };
     }
 
     /**
@@ -60,8 +71,14 @@ class Store {
      * @param {Object|Function} updater - New state object or updater function
      */
     setState(updater) {
-        // Save current state to history for undo
-        this.history.push(JSON.stringify(this.state));
+        // Save current state to history for undo (only data, not UI state)
+        // UI state contains callbacks which can't be serialized
+        const historyState = {
+            currentList: this.state.currentList,
+            templates: this.state.templates,
+            settings: this.state.settings
+        };
+        this.history.push(JSON.stringify(historyState));
         if (this.history.length > this.maxHistory) {
             this.history.shift();
         }
@@ -116,7 +133,12 @@ class Store {
      */
     undo() {
         if (this.history.length > 0) {
-            this.state = JSON.parse(this.history.pop());
+            const previousData = JSON.parse(this.history.pop());
+            // Restore data state but keep current UI state
+            this.state = {
+                ...previousData,
+                ui: this.state.ui
+            };
             this.notify();
             return true;
         }
