@@ -638,6 +638,29 @@ body {
     background-color: #f5f5f5;
 }
 
+.item-row[draggable="true"] {
+    cursor: grab;
+}
+
+.item-row.dragging {
+    opacity: 0.5;
+    background-color: var(--viking);
+    color: white;
+}
+
+.item-row.dragging .item-name,
+.item-row.dragging .item-quantity {
+    color: white;
+}
+
+.item-row.drop-above {
+    border-top: 2px solid var(--viking);
+}
+
+.item-row.drop-below {
+    border-bottom: 2px solid var(--viking);
+}
+
 .item-row .item-name {
     flex: 1;
     color: var(--matisse);
