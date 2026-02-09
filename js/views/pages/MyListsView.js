@@ -243,7 +243,9 @@ export class MyListsView {
         return `
             <div class="items-view">
                 ${categories.map(cat => {
-                    const catItems = items.filter(i => i.categoryId === cat.id);
+                    const catItems = items
+                        .filter(i => i.categoryId === cat.id)
+                        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
                     return `
                         <div class="category-section" data-category-id="${cat.id}">
                             <div class="category-header">
@@ -251,7 +253,10 @@ export class MyListsView {
                                 <h3>${sanitize(cat.name)}</h3>
                                 <span class="item-count">(${catItems.length} items)</span>
                             </div>
-                            <div class="category-items">
+                            <div class="category-items"
+                                 data-category-id="${cat.id}"
+                                 ondragover="event.preventDefault()"
+                                 ondrop="window.Packy?.handleCategoryDrop?.(event, '${cat.id}')">
                                 ${catItems.map(item => this.renderItemRow(item, days)).join('')}
                                 <div class="item-quick-add">
                                     <input type="text" class="item-input"
@@ -277,7 +282,11 @@ export class MyListsView {
         const qtyDisplay = this.getQuantityDisplay(item, days);
 
         return `
-            <div class="item-row" data-item-id="${item.id}">
+            <div class="item-row" data-item-id="${item.id}"
+                 draggable="true"
+                 ondragstart="window.Packy?.handleItemDragStart?.(event, '${item.id}')"
+                 ondragover="window.Packy?.handleItemDragOver?.(event)"
+                 ondrop="window.Packy?.handleItemDrop?.(event, '${item.id}')">
                 <span class="item-name">${sanitize(item.name)}</span>
                 <span class="item-quantity">${qtyDisplay}</span>
                 <div class="item-actions">

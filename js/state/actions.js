@@ -185,8 +185,15 @@ export function removeCategory(categoryId) {
  * @returns {string} New item ID
  */
 export function addItem(itemData) {
+    const currentItems = store.getState().currentList?.items || [];
+    const categoryItems = currentItems.filter(i => i.categoryId === itemData.categoryId);
+    const maxOrder = categoryItems.length > 0
+        ? Math.max(...categoryItems.map(i => i.order ?? 0))
+        : -1;
+
     const item = {
         id: generateShortId(),
+        order: maxOrder + 1,
         quantityType: 'single',
         quantity: 1,
         quantityExpression: null,
@@ -244,6 +251,93 @@ export function toggleItemPacked(itemId) {
  */
 export function moveItemToBag(itemId, bagId) {
     updateItem(itemId, { bagId });
+}
+
+/**
+ * Move item to a different category
+ * @param {string} itemId - Item ID
+ * @param {string} newCategoryId - Target category ID
+ */
+export function moveItemToCategory(itemId, newCategoryId) {
+    const state = store.getState();
+    const items = state.currentList?.items || [];
+    const categoryItems = items.filter(i => i.categoryId === newCategoryId);
+    const maxOrder = categoryItems.length > 0
+        ? Math.max(...categoryItems.map(i => i.order ?? 0))
+        : -1;
+
+    updateItem(itemId, { categoryId: newCategoryId, order: maxOrder + 1 });
+}
+
+/**
+ * Reorder item within or across categories
+ * @param {string} itemId - Item being dragged
+ * @param {string} targetItemId - Item being dropped on
+ * @param {string} position - 'before' or 'after'
+ */
+export function reorderItem(itemId, targetItemId, position) {
+    store.setState(state => {
+        const items = [...state.currentList.items];
+        const item = items.find(i => i.id === itemId);
+        const targetItem = items.find(i => i.id === targetItemId);
+
+        if (!item || !targetItem) return state;
+
+        if (item.categoryId !== targetItem.categoryId) {
+            // Moving to different category - place relative to target
+            const targetCategoryItems = items
+                .filter(i => i.categoryId === targetItem.categoryId)
+                .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+            const targetIndex = targetCategoryItems.findIndex(i => i.id === targetItemId);
+            const newOrder = position === 'before' ? targetIndex : targetIndex + 1;
+
+            // Shift existing items to make room
+            targetCategoryItems.forEach((i, idx) => {
+                if (idx >= newOrder) i.order = idx + 1;
+            });
+
+            return {
+                currentList: {
+                    ...state.currentList,
+                    items: items.map(i => {
+                        if (i.id === itemId) {
+                            return { ...i, categoryId: targetItem.categoryId, order: newOrder };
+                        }
+                        const updated = targetCategoryItems.find(c => c.id === i.id);
+                        return updated || i;
+                    })
+                }
+            };
+        }
+
+        // Same category reordering
+        const categoryItems = items
+            .filter(i => i.categoryId === item.categoryId)
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+        const oldIndex = categoryItems.findIndex(i => i.id === itemId);
+        const targetIndex = categoryItems.findIndex(i => i.id === targetItemId);
+        let newIndex = position === 'before' ? targetIndex : targetIndex + 1;
+        if (oldIndex < newIndex) newIndex--;
+
+        // Remove and reinsert
+        const [movedItem] = categoryItems.splice(oldIndex, 1);
+        categoryItems.splice(newIndex, 0, movedItem);
+
+        // Reassign order values
+        categoryItems.forEach((i, idx) => { i.order = idx; });
+
+        return {
+            currentList: {
+                ...state.currentList,
+                items: items.map(i => {
+                    const updated = categoryItems.find(c => c.id === i.id);
+                    return updated || i;
+                })
+            }
+        };
+    });
 }
 
 /**

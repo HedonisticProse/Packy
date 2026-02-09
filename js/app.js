@@ -160,8 +160,64 @@ class PackyApp {
         // Global dragend handler
         document.addEventListener('dragend', () => {
             $$('.pack-item.dragging').forEach(el => el.classList.remove('dragging'));
+            $$('.item-row.dragging, .item-row.drop-above, .item-row.drop-below')
+                .forEach(el => el.classList.remove('dragging', 'drop-above', 'drop-below'));
             this.draggedItemId = null;
         });
+
+        // Item reordering handlers (Items view)
+        window.Packy.handleItemDragStart = (event, itemId) => {
+            this.draggedItemId = itemId;
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', itemId);
+            event.target.closest('.item-row')?.classList.add('dragging');
+        };
+
+        window.Packy.handleItemDragOver = (event) => {
+            event.preventDefault();
+            // Clear previous drop indicators
+            $$('.item-row.drop-above, .item-row.drop-below').forEach(el => {
+                el.classList.remove('drop-above', 'drop-below');
+            });
+            const row = event.target.closest('.item-row');
+            if (row && !row.classList.contains('dragging')) {
+                const rect = row.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+                if (event.clientY < midY) {
+                    row.classList.add('drop-above');
+                } else {
+                    row.classList.add('drop-below');
+                }
+            }
+        };
+
+        window.Packy.handleItemDrop = (event, targetItemId) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const itemId = this.draggedItemId;
+            if (itemId && targetItemId && itemId !== targetItemId) {
+                const row = event.target.closest('.item-row');
+                const rect = row.getBoundingClientRect();
+                const position = event.clientY < rect.top + rect.height / 2 ? 'before' : 'after';
+                actions.reorderItem(itemId, targetItemId, position);
+            }
+            this.cleanupItemDrag();
+        };
+
+        window.Packy.handleCategoryDrop = (event, categoryId) => {
+            event.preventDefault();
+            const itemId = this.draggedItemId;
+            if (itemId) {
+                actions.moveItemToCategory(itemId, categoryId);
+            }
+            this.cleanupItemDrag();
+        };
+    }
+
+    cleanupItemDrag() {
+        $$('.item-row.dragging, .item-row.drop-above, .item-row.drop-below')
+            .forEach(el => el.classList.remove('dragging', 'drop-above', 'drop-below'));
+        this.draggedItemId = null;
     }
 
     // ========================================
