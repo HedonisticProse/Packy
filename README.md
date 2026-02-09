@@ -18,16 +18,16 @@ Hosted on GitHub Pages: [https://hedonisticprose.github.io/Packy/](https://hedon
   - [File Structure](#file-structure)
   - [Data Storage](#data-storage)
   - [Settings](#settings)
-  - [Configuration Menu](#configuration-menu)
+  - [Navigation Menu](#navigation-menu)
   - [Customization](#customization)
     - [Bags](#bags)
     - [Categories](#categories)
     - [Items](#items)
     - [Stages](#stages)
-  - [Filtering](#filtering)
-  - [Search](#search)
+  - [Workflow Tabs](#workflow-tabs)
   - [Export Options](#export-options)
     - [JSON Export/Import](#json-exportimport)
+    - [Template Export](#template-export)
   - [Privacy](#privacy)
   - [License](#license)
 
@@ -43,15 +43,18 @@ I don’t know of another tool like this, but if AI-generated projects aren’t 
 
 ## Features
 
-- **Templates**: Start fast with built-in packing templates
+- **Templates**: Start fast with built-in packing templates or import custom ones
 - **Trip Creation**: Name your trip and set dates to get a tailored list
-- **Bags & Categories**: Organize items by bag and category
+- **Bags & Categories**: Organize items by bag and category with custom colors
 - **Smart Quantities**: Use expressions like `d`, `d+1`, `2d`, and `d/2` where `d` = trip days
-- **Packing Workflow**: Track progress and see packed percentages
-- **Preparation Stages**: Add task checklists (night before, morning of, etc.)
-- **Drag & Drop**: Move items between bags
-- **Import/Export**: Save and restore lists as JSON
+- **Quick Add**: Rapid type-enter-type-enter entry for both items and tasks
+- **Item Reordering**: Drag-and-drop items within a category or between categories
+- **Packing Workflow**: Track progress with per-bag packed percentages
+- **Preparation Stages**: Add task checklists (night before, morning of, etc.) with progress tracking
+- **Drag & Drop**: Move items between bags in the Pack view
+- **Import/Export**: Save and restore lists as JSON, or export as reusable templates
 - **Undo**: Quick `Ctrl + Z` for the last action
+- **Mobile Friendly**: Responsive design works on desktop and mobile devices
 
 ## Getting Started
 
@@ -83,17 +86,17 @@ The **Settings** page includes:
 
 - About Packy and current version
 - Data management (export or clear the current list)
-- Keyboard shortcuts
-- Quantity expression guide
-- Links to GitHub and Issues
+- Keyboard shortcuts reference
+- Quantity expression syntax guide with examples
+- Links to GitHub repository and issue tracker
 
-## Configuration Menu
+## Navigation Menu
 
 Use the top navigation to switch between:
 
-- **My Lists**: Your active trip and packing workflow
-- **Templates**: Browse templates, import templates, or export your current list as a template
-- **Settings**: App details and data management tools
+- **My Lists**: Your active trip and packing workflow (or start a new trip if none active)
+- **Templates**: Browse built-in templates, import custom templates, preview template contents, or export your current list as a template
+- **Settings**: App info, data management, keyboard shortcuts, and expression syntax guide
 
 ## Customization
 
@@ -114,19 +117,28 @@ Use the top navigation to switch between:
   - **Single**: Always 1
   - **Fixed**: Always a specific number
   - **Dependent**: Expressions based on trip days (`d`)
+- **Quick Add**: Type an item name and press Enter for rapid entry (defaults to Single quantity)
+- **Reorder**: Drag-and-drop items to reorder within a category or move between categories
 
 ### Stages
 
-- Create preparation stages (e.g., "Night Before")
+- Create preparation stages (e.g., "Night Before", "Morning Of")
 - Add checklist tasks and mark them complete
+- **Rapid Entry**: Type a task and press Enter to add, then continue typing the next one
+- Progress percentage shown per stage
 
-## Filtering
+## Workflow Tabs
 
-Filtering is not available yet. It’s on the wishlist for a future update.
+When you have an active packing list, navigate between these tabs:
 
-## Search
-
-Search is not available yet. It’s on the wishlist for a future update.
+| Tab | Purpose |
+|-----|---------|
+| **Trip Info** | Edit trip name and dates |
+| **Bags** | Add, edit, and delete bags with colors |
+| **Items** | Manage items by category with quick-add and drag-and-drop |
+| **Assignments** | Set default bags for each category |
+| **Pack!** | Check off items as you pack them |
+| **Stages** | Preparation checklists with task tracking |
 
 ## Export Options
 
@@ -141,6 +153,13 @@ Search is not available yet. It’s on the wishlist for a future update.
 ```
 packy-trip-name-YYYY-MM-DD.json
 ```
+
+### Template Export
+
+Save your current packing list as a reusable template:
+1. Go to Templates > Save Current List as Template
+2. Give it a name and description
+3. The exported template can be imported later or shared with others
 
 ## Privacy
 
