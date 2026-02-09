@@ -19,6 +19,7 @@ export class MyListsView {
         this.subviews = ['trip', 'bags', 'items', 'assignments', 'pack', 'stages'];
         this.draggedItem = null;
         this.pendingFocusStageId = null;
+        this.pendingFocusCategoryId = null;
     }
 
     /**
@@ -138,6 +139,14 @@ export class MyListsView {
             this.pendingFocusStageId = null;
         }
 
+        if (this.pendingFocusCategoryId) {
+            const input = $(`.item-input[data-category-id="${this.pendingFocusCategoryId}"]`, this.container);
+            if (input) {
+                input.focus();
+            }
+            this.pendingFocusCategoryId = null;
+        }
+
         // Scroll active tab into view (centered) on mobile
         const activeTab = $('.tab.active', this.container);
         if (activeTab) {
@@ -244,6 +253,11 @@ export class MyListsView {
                             </div>
                             <div class="category-items">
                                 ${catItems.map(item => this.renderItemRow(item, days)).join('')}
+                                <div class="item-quick-add">
+                                    <input type="text" class="item-input"
+                                           placeholder="Quick add item..."
+                                           data-category-id="${cat.id}">
+                                </div>
                                 <button class="btn btn-text add-item-btn" data-category-id="${cat.id}">
                                     ${ICONS.plus} Add Item
                                 </button>
@@ -586,6 +600,19 @@ export class MyListsView {
 
         $('#add-category-btn', this.container)?.addEventListener('click', () => {
             this.showAddCategoryModal();
+        });
+
+        // Quick add item via Enter key (rapid entry)
+        delegate(this.container, 'keypress', '.item-input', (e, input) => {
+            if (e.key === 'Enter' && input.value.trim()) {
+                const categoryId = input.dataset.categoryId;
+                this.pendingFocusCategoryId = categoryId;
+                actions.addItem({
+                    name: input.value.trim(),
+                    categoryId: categoryId,
+                    quantityType: 'single'
+                });
+            }
         });
     }
 
