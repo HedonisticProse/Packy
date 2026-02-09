@@ -658,6 +658,26 @@ body {
     margin-top: 0.5rem;
 }
 
+.item-quick-add {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.item-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.item-input:focus {
+    border-color: var(--viking);
+    border-style: solid;
+    outline: none;
+}
+
 /* ========================================
    ASSIGNMENTS VIEW
    ======================================== */
