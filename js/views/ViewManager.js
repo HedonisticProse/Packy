@@ -14,6 +14,7 @@ export class ViewManager {
         this.container = container;
         this.currentView = null;
         this.currentViewName = null;
+        this.currentModalTitle = null;
 
         // View registry
         this.views = {
@@ -90,9 +91,16 @@ export class ViewManager {
         if (!modalConfig) {
             modalOverlay.classList.add('hidden');
             modalOverlay.innerHTML = '';
+            this.currentModalTitle = null;
             return;
         }
 
+        // Skip re-render if same modal is already showing (prevents form reset)
+        if (this.currentModalTitle === modalConfig.title && !modalOverlay.classList.contains('hidden')) {
+            return;
+        }
+
+        this.currentModalTitle = modalConfig.title;
         modalOverlay.classList.remove('hidden');
         modalOverlay.innerHTML = `
             <div class="modal">

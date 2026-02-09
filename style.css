@@ -93,6 +93,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    overflow-x: hidden;
 }
 
 .content-placeholder {
@@ -337,11 +338,13 @@ body {
     margin-top: 2rem;
     padding-top: 2rem;
     border-top: 1px solid var(--apache);
+    text-align: center;
 }
 
 .template-quick-select h3 {
     color: var(--matisse);
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 .template-cards {
@@ -350,6 +353,8 @@ body {
     gap: 1rem;
     max-width: 800px;
     margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .template-card {
@@ -647,12 +652,6 @@ body {
 .item-row .item-actions {
     display: flex;
     gap: 0.25rem;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.item-row:hover .item-actions {
-    opacity: 1;
 }
 
 .add-item-btn {
@@ -767,6 +766,7 @@ body {
 
 .pack-item {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 0.5rem;
     padding: 0.4rem 0.5rem;
@@ -796,17 +796,20 @@ body {
 .pack-checkbox {
     width: 18px;
     height: 18px;
+    flex-shrink: 0;
     accent-color: var(--viking);
 }
 
 .pack-item .item-name {
     flex: 1;
     font-size: 0.95rem;
+    min-width: 0;
 }
 
 .pack-item .item-qty {
     font-size: 0.85rem;
     color: #888;
+    flex-shrink: 0;
 }
 
 .item-bag-select {
@@ -908,11 +911,7 @@ body {
 }
 
 .task-row .btn-icon {
-    opacity: 0;
-}
-
-.task-row:hover .btn-icon {
-    opacity: 1;
+    /* Always visible for mobile accessibility */
 }
 
 .stage-add-task {
@@ -1340,6 +1339,8 @@ kbd {
 
     .template-cards {
         grid-template-columns: 1fr 1fr;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     .packing-grid {
@@ -1348,6 +1349,8 @@ kbd {
 
     .templates-grid {
         grid-template-columns: 1fr;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     .bags-grid {
@@ -1362,5 +1365,72 @@ kbd {
 
     .tab {
         white-space: nowrap;
+    }
+
+    /* Assignments: stack dropdown below category name */
+    .assignment-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .assignment-row .category-name {
+        justify-content: flex-start;
+    }
+
+    .bag-select {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    /* Stages: stack input and button vertically */
+    .stage-add-task {
+        flex-direction: column;
+    }
+
+    .stage-add-task .task-input {
+        width: 100%;
+    }
+
+    .stage-add-task .btn {
+        width: 100%;
+    }
+
+    /* Expression guide table: make it scrollable and smaller */
+    .expression-guide {
+        font-size: 0.85rem;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .expression-guide th,
+    .expression-guide td {
+        padding: 0.4rem 0.5rem;
+        white-space: nowrap;
+    }
+
+    /* Pack items: hide bag select on mobile */
+    .item-bag-select {
+        display: none;
+    }
+
+    /* Template cards: ensure proper centering */
+    .template-quick-select {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .template-cards {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Bags: allow action buttons to wrap */
+    .bag-card-actions {
+        flex-wrap: wrap;
+    }
+
+    .bag-card-actions .btn {
+        flex: 1 1 auto;
     }
 }

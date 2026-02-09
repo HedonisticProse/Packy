@@ -18,6 +18,7 @@ export class MyListsView {
         this.container = container;
         this.subviews = ['trip', 'bags', 'items', 'assignments', 'pack', 'stages'];
         this.draggedItem = null;
+        this.pendingFocusStageId = null;
     }
 
     /**
@@ -127,6 +128,21 @@ export class MyListsView {
         `;
 
         this.bindListViewEvents(activeSubview, state);
+
+        // Restore focus after re-render if needed
+        if (this.pendingFocusStageId) {
+            const input = $(`.task-input[data-stage-id="${this.pendingFocusStageId}"]`, this.container);
+            if (input) {
+                input.focus();
+            }
+            this.pendingFocusStageId = null;
+        }
+
+        // Scroll active tab into view (centered) on mobile
+        const activeTab = $('.tab.active', this.container);
+        if (activeTab) {
+            activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
     }
 
     /**
@@ -616,8 +632,8 @@ export class MyListsView {
             const stageId = btn.dataset.stageId;
             const input = $(`.task-input[data-stage-id="${stageId}"]`, this.container);
             if (input?.value.trim()) {
+                this.pendingFocusStageId = stageId;
                 actions.addTaskToStage(stageId, input.value.trim());
-                input.value = '';
             }
         });
 
@@ -625,8 +641,8 @@ export class MyListsView {
         delegate(this.container, 'keypress', '.task-input', (e, input) => {
             if (e.key === 'Enter' && input.value.trim()) {
                 const stageId = input.dataset.stageId;
+                this.pendingFocusStageId = stageId;
                 actions.addTaskToStage(stageId, input.value.trim());
-                input.value = '';
             }
         });
 
