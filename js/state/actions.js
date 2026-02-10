@@ -413,30 +413,67 @@ export function removeStage(stageId) {
 }
 
 /**
+ * Reorder stages
+ * @param {string} stageId - Stage being dragged
+ * @param {string} targetStageId - Stage being dropped on
+ * @param {string} position - 'before' or 'after'
+ */
+export function reorderStage(stageId, targetStageId, position) {
+    store.setState(state => {
+        const stages = [...state.currentList.stages].sort((a, b) => a.order - b.order);
+        const draggedIndex = stages.findIndex(s => s.id === stageId);
+        const targetIndex = stages.findIndex(s => s.id === targetStageId);
+
+        if (draggedIndex === -1 || targetIndex === -1) return state;
+
+        let newIndex = position === 'before' ? targetIndex : targetIndex + 1;
+        if (draggedIndex < newIndex) newIndex--;
+
+        const [movedStage] = stages.splice(draggedIndex, 1);
+        stages.splice(newIndex, 0, movedStage);
+
+        // Reassign order values
+        stages.forEach((s, idx) => { s.order = idx; });
+
+        return {
+            currentList: { ...state.currentList, stages }
+        };
+    });
+}
+
+/**
  * Add a task to a stage
  * @param {string} stageId - Stage ID
  * @param {string} description - Task description
  * @returns {string} New task ID
  */
 export function addTaskToStage(stageId, description) {
-    const task = {
-        id: generateShortId(),
-        description,
-        completed: false
-    };
+    store.setState(state => {
+        const stage = state.currentList.stages.find(s => s.id === stageId);
+        const maxOrder = stage && stage.tasks.length > 0
+            ? Math.max(...stage.tasks.map(t => t.order ?? 0))
+            : -1;
 
-    store.setState(state => ({
-        currentList: {
-            ...state.currentList,
-            stages: state.currentList.stages.map(stage =>
-                stage.id === stageId
-                    ? { ...stage, tasks: [...stage.tasks, task] }
-                    : stage
-            )
-        }
-    }));
+        const task = {
+            id: generateShortId(),
+            description,
+            completed: false,
+            order: maxOrder + 1
+        };
 
-    return task.id;
+        return {
+            currentList: {
+                ...state.currentList,
+                stages: state.currentList.stages.map(s =>
+                    s.id === stageId ? { ...s, tasks: [...s.tasks, task] } : s
+                )
+            }
+        };
+    });
+
+    const state = store.getState();
+    const stage = state.currentList.stages.find(s => s.id === stageId);
+    return stage.tasks[stage.tasks.length - 1].id;
 }
 
 /**
@@ -502,6 +539,44 @@ export function removeTask(stageId, taskId) {
             )
         }
     }));
+}
+
+/**
+ * Reorder task within a stage
+ * @param {string} stageId - Stage ID
+ * @param {string} taskId - Task being dragged
+ * @param {string} targetTaskId - Task being dropped on
+ * @param {string} position - 'before' or 'after'
+ */
+export function reorderTask(stageId, taskId, targetTaskId, position) {
+    store.setState(state => {
+        const stage = state.currentList.stages.find(s => s.id === stageId);
+        if (!stage) return state;
+
+        const tasks = [...stage.tasks].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        const draggedIndex = tasks.findIndex(t => t.id === taskId);
+        const targetIndex = tasks.findIndex(t => t.id === targetTaskId);
+
+        if (draggedIndex === -1 || targetIndex === -1) return state;
+
+        let newIndex = position === 'before' ? targetIndex : targetIndex + 1;
+        if (draggedIndex < newIndex) newIndex--;
+
+        const [movedTask] = tasks.splice(draggedIndex, 1);
+        tasks.splice(newIndex, 0, movedTask);
+
+        // Reassign order values
+        tasks.forEach((t, idx) => { t.order = idx; });
+
+        return {
+            currentList: {
+                ...state.currentList,
+                stages: state.currentList.stages.map(s =>
+                    s.id === stageId ? { ...s, tasks } : s
+                )
+            }
+        };
+    });
 }
 
 // ============================================

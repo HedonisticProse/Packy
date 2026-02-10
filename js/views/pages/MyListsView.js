@@ -20,6 +20,7 @@ export class MyListsView {
         this.draggedItem = null;
         this.pendingFocusStageId = null;
         this.pendingFocusCategoryId = null;
+        this.pendingScrollPosition = null;
     }
 
     /**
@@ -147,10 +148,24 @@ export class MyListsView {
             this.pendingFocusCategoryId = null;
         }
 
-        // Scroll active tab into view (centered) on mobile
-        const activeTab = $('.tab.active', this.container);
-        if (activeTab) {
-            activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        // Restore scroll position after re-render if needed
+        const shouldRestoreScroll = this.pendingScrollPosition !== null;
+        if (shouldRestoreScroll) {
+            requestAnimationFrame(() => {
+                const scrollContainer = this.container.querySelector('.subview-content');
+                if (scrollContainer) {
+                    scrollContainer.scrollTop = this.pendingScrollPosition;
+                }
+            });
+            this.pendingScrollPosition = null;
+        }
+
+        // Scroll active tab into view (centered) on mobile - but not if we're restoring scroll
+        if (!shouldRestoreScroll) {
+            const activeTab = $('.tab.active', this.container);
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
         }
     }
 
@@ -412,18 +427,40 @@ export class MyListsView {
                 ${stages.sort((a, b) => a.order - b.order).map(stage => {
                     const progress = actions.getStageProgress(stage.id);
                     return `
-                        <div class="stage-card" data-stage-id="${stage.id}">
+                        <div class="stage-card" data-stage-id="${stage.id}"
+                             draggable="true"
+                             ondragstart="window.Packy?.handleStageDragStart?.(event, '${stage.id}')"
+                             ondragover="window.Packy?.handleStageDragOver?.(event)"
+                             ondrop="window.Packy?.handleStageDrop?.(event, '${stage.id}')">
                             <div class="stage-header">
+                                <span class="stage-drag-handle">☰</span>
                                 <h3>${sanitize(stage.name)}</h3>
-                                <span class="stage-progress">${progress}%</span>
+                                <div class="stage-actions">
+                                    <span class="stage-progress">${progress}%</span>
+                                    <button class="btn btn-icon btn-small" data-action="edit-stage" title="Edit">
+                                        ${ICONS.edit}
+                                    </button>
+                                    <button class="btn btn-icon btn-small btn-danger" data-action="delete-stage" title="Delete">
+                                        ${ICONS.trash}
+                                    </button>
+                                </div>
                             </div>
                             <div class="stage-tasks">
-                                ${stage.tasks.map(task => `
+                                ${stage.tasks.sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).map(task => `
                                     <label class="task-row ${task.completed ? 'completed' : ''}"
-                                           data-task-id="${task.id}">
+                                           data-task-id="${task.id}"
+                                           data-stage-id="${stage.id}"
+                                           draggable="true"
+                                           ondragstart="window.Packy?.handleTaskDragStart?.(event, '${stage.id}', '${task.id}')"
+                                           ondragover="window.Packy?.handleTaskDragOver?.(event)"
+                                           ondrop="window.Packy?.handleTaskDrop?.(event, '${stage.id}', '${task.id}')">
+                                        <span class="task-drag-handle">☰</span>
                                         <input type="checkbox" class="task-checkbox"
                                                ${task.completed ? 'checked' : ''}>
                                         <span class="task-description">${sanitize(task.description)}</span>
+                                        <button class="btn btn-icon btn-small" data-action="edit-task" title="Edit">
+                                            ${ICONS.edit}
+                                        </button>
                                         <button class="btn btn-icon btn-small btn-danger"
                                                 data-action="delete-task" title="Delete">
                                             ${ICONS.trash}
@@ -638,12 +675,24 @@ export class MyListsView {
     bindPackingEvents() {
         // Checkbox toggling
         delegate(this.container, 'change', '.pack-checkbox', (e, checkbox) => {
+            // Capture scroll position before state update
+            const scrollContainer = this.container.querySelector('.subview-content');
+            if (scrollContainer) {
+                this.pendingScrollPosition = scrollContainer.scrollTop;
+            }
+
             const itemId = checkbox.closest('.pack-item').dataset.itemId;
             actions.toggleItemPacked(itemId);
         });
 
         // Dropdown bag change
         delegate(this.container, 'change', '.item-bag-select', (e, select) => {
+            // Capture scroll position before state update
+            const scrollContainer = this.container.querySelector('.subview-content');
+            if (scrollContainer) {
+                this.pendingScrollPosition = scrollContainer.scrollTop;
+            }
+
             const itemId = select.dataset.itemId;
             const bagId = select.value;
             actions.moveItemToBag(itemId, bagId);
@@ -658,9 +707,26 @@ export class MyListsView {
     bindStagesEvents() {
         // Task checkbox
         delegate(this.container, 'change', '.task-checkbox', (e, checkbox) => {
+            e.stopPropagation(); // Prevent drag
+
+            // Capture scroll position before state update
+            const scrollContainer = this.container.querySelector('.subview-content');
+            if (scrollContainer) {
+                this.pendingScrollPosition = scrollContainer.scrollTop;
+            }
+
             const stageId = checkbox.closest('.stage-card').dataset.stageId;
             const taskId = checkbox.closest('.task-row').dataset.taskId;
             actions.toggleTaskCompleted(stageId, taskId);
+        });
+
+        // Edit task
+        delegate(this.container, 'click', '[data-action="edit-task"]', (e, btn) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const stageId = btn.closest('.stage-card').dataset.stageId;
+            const taskId = btn.closest('.task-row').dataset.taskId;
+            this.showEditTaskModal(stageId, taskId);
         });
 
         // Add task
@@ -687,6 +753,22 @@ export class MyListsView {
             const stageId = btn.closest('.stage-card').dataset.stageId;
             const taskId = btn.closest('.task-row').dataset.taskId;
             actions.removeTask(stageId, taskId);
+        });
+
+        // Edit stage
+        delegate(this.container, 'click', '[data-action="edit-stage"]', (e, btn) => {
+            e.stopPropagation();
+            const stageId = btn.closest('.stage-card').dataset.stageId;
+            this.showEditStageModal(stageId);
+        });
+
+        // Delete stage
+        delegate(this.container, 'click', '[data-action="delete-stage"]', (e, btn) => {
+            e.stopPropagation();
+            const stageId = btn.closest('.stage-card').dataset.stageId;
+            if (confirm('Delete this stage and all its tasks?')) {
+                actions.removeStage(stageId);
+            }
         });
 
         // Add stage
@@ -1124,6 +1206,71 @@ export class MyListsView {
                     const name = $('#stage-name', overlay).value;
                     if (name.trim()) {
                         actions.addStage({ name: name.trim() });
+                        actions.hideModal();
+                    }
+                });
+            }
+        });
+    }
+
+    showEditStageModal(stageId) {
+        const stage = store.getState().currentList.stages.find(s => s.id === stageId);
+        if (!stage) return;
+
+        actions.showModal({
+            title: 'Edit Stage',
+            content: `
+                <form id="stage-form">
+                    <div class="form-group">
+                        <label for="stage-name">Stage Name *</label>
+                        <input type="text" id="stage-name" required value="${sanitize(stage.name)}">
+                    </div>
+                </form>
+            `,
+            actions: `
+                <button type="button" class="btn btn-secondary" id="modal-cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="modal-save">Save</button>
+            `,
+            onRender: (overlay) => {
+                $('#modal-cancel', overlay).addEventListener('click', actions.hideModal);
+                $('#modal-save', overlay).addEventListener('click', () => {
+                    const name = $('#stage-name', overlay).value;
+                    if (name.trim()) {
+                        actions.updateStage(stageId, { name: name.trim() });
+                        actions.hideModal();
+                    }
+                });
+            }
+        });
+    }
+
+    showEditTaskModal(stageId, taskId) {
+        const state = store.getState();
+        const stage = state.currentList.stages.find(s => s.id === stageId);
+        const task = stage?.tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        actions.showModal({
+            title: 'Edit Task',
+            content: `
+                <form id="task-form">
+                    <div class="form-group">
+                        <label for="task-description">Task Description *</label>
+                        <input type="text" id="task-description" required
+                               value="${sanitize(task.description)}">
+                    </div>
+                </form>
+            `,
+            actions: `
+                <button type="button" class="btn btn-secondary" id="modal-cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="modal-save">Save</button>
+            `,
+            onRender: (overlay) => {
+                $('#modal-cancel', overlay).addEventListener('click', actions.hideModal);
+                $('#modal-save', overlay).addEventListener('click', () => {
+                    const description = $('#task-description', overlay).value;
+                    if (description.trim()) {
+                        actions.updateTask(stageId, taskId, { description: description.trim() });
                         actions.hideModal();
                     }
                 });

@@ -162,6 +162,10 @@ class PackyApp {
             $$('.pack-item.dragging').forEach(el => el.classList.remove('dragging'));
             $$('.item-row.dragging, .item-row.drop-above, .item-row.drop-below')
                 .forEach(el => el.classList.remove('dragging', 'drop-above', 'drop-below'));
+            $$('.task-row.dragging, .task-row.drop-above, .task-row.drop-below')
+                .forEach(el => el.classList.remove('dragging', 'drop-above', 'drop-below'));
+            $$('.stage-card.dragging, .stage-card.drop-above, .stage-card.drop-below')
+                .forEach(el => el.classList.remove('dragging', 'drop-above', 'drop-below'));
             this.draggedItemId = null;
         });
 
@@ -211,6 +215,81 @@ class PackyApp {
                 actions.moveItemToCategory(itemId, categoryId);
             }
             this.cleanupItemDrag();
+        };
+
+        // Task reordering handlers
+        this.draggedTaskData = null;
+
+        window.Packy.handleTaskDragStart = (event, stageId, taskId) => {
+            this.draggedTaskData = { stageId, taskId };
+            event.dataTransfer.effectAllowed = 'move';
+            event.target.classList.add('dragging');
+            event.stopPropagation();
+        };
+
+        window.Packy.handleTaskDragOver = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            $$('.task-row.drop-above, .task-row.drop-below').forEach(el => {
+                el.classList.remove('drop-above', 'drop-below');
+            });
+            const row = event.target.closest('.task-row');
+            if (row && !row.classList.contains('dragging')) {
+                const rect = row.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+                row.classList.add(event.clientY < midY ? 'drop-above' : 'drop-below');
+            }
+        };
+
+        window.Packy.handleTaskDrop = (event, targetStageId, targetTaskId) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const data = this.draggedTaskData;
+            if (data && data.stageId === targetStageId && data.taskId !== targetTaskId) {
+                const row = event.target.closest('.task-row');
+                const rect = row.getBoundingClientRect();
+                const position = event.clientY < rect.top + rect.height / 2 ? 'before' : 'after';
+                actions.reorderTask(targetStageId, data.taskId, targetTaskId, position);
+            }
+            $$('.task-row.dragging, .task-row.drop-above, .task-row.drop-below')
+                .forEach(el => el.classList.remove('dragging', 'drop-above', 'drop-below'));
+            this.draggedTaskData = null;
+        };
+
+        // Stage reordering handlers
+        this.draggedStageId = null;
+
+        window.Packy.handleStageDragStart = (event, stageId) => {
+            this.draggedStageId = stageId;
+            event.dataTransfer.effectAllowed = 'move';
+            event.target.classList.add('dragging');
+        };
+
+        window.Packy.handleStageDragOver = (event) => {
+            event.preventDefault();
+            $$('.stage-card.drop-above, .stage-card.drop-below').forEach(el => {
+                el.classList.remove('drop-above', 'drop-below');
+            });
+            const card = event.target.closest('.stage-card');
+            if (card && !card.classList.contains('dragging')) {
+                const rect = card.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+                card.classList.add(event.clientY < midY ? 'drop-above' : 'drop-below');
+            }
+        };
+
+        window.Packy.handleStageDrop = (event, targetStageId) => {
+            event.preventDefault();
+            const stageId = this.draggedStageId;
+            if (stageId && targetStageId && stageId !== targetStageId) {
+                const card = event.target.closest('.stage-card');
+                const rect = card.getBoundingClientRect();
+                const position = event.clientY < rect.top + rect.height / 2 ? 'before' : 'after';
+                actions.reorderStage(stageId, targetStageId, position);
+            }
+            $$('.stage-card.dragging, .stage-card.drop-above, .stage-card.drop-below')
+                .forEach(el => el.classList.remove('dragging', 'drop-above', 'drop-below'));
+            this.draggedStageId = null;
         };
     }
 
