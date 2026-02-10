@@ -894,6 +894,7 @@ export class MyListsView {
                             <option value="carry-on">Carry-On</option>
                             <option value="personal-item">Personal Item</option>
                             <option value="checked">Checked Bag</option>
+                            <option value="luggage">Lugagge</option>
                             <option value="backpack">Backpack</option>
                             <option value="sling-bag">Sling Bag</option>
                             <option value="custom">Custom</option>
@@ -948,6 +949,7 @@ export class MyListsView {
                             <option value="carry-on" ${bag.type === 'carry-on' ? 'selected' : ''}>Carry-On</option>
                             <option value="personal-item" ${bag.type === 'personal-item' ? 'selected' : ''}>Personal Item</option>
                             <option value="checked" ${bag.type === 'checked' ? 'selected' : ''}>Checked Bag</option>
+                            <option value="checked" ${bag.type === 'lugagge' ? 'selected' : ''}>Luggage</option>
                             <option value="backpack" ${bag.type === 'backpack' ? 'selected' : ''}>Backpack</option>
                             <option value="sling-bag" ${bag.type === 'sling-bag' ? 'selected' : ''}>Sling Bag</option>
                             <option value="custom" ${bag.type === 'custom' ? 'selected' : ''}>Custom</option>
