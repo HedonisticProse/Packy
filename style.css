@@ -963,6 +963,75 @@ body {
     /* Always visible for mobile accessibility */
 }
 
+.task-row[draggable="true"] {
+    cursor: grab;
+}
+
+.task-row.dragging {
+    opacity: 0.5;
+}
+
+.task-row.drop-above {
+    border-top: 2px solid var(--viking);
+}
+
+.task-row.drop-below {
+    border-bottom: 2px solid var(--viking);
+}
+
+.task-drag-handle {
+    cursor: grab;
+    opacity: 0.4;
+    user-select: none;
+}
+
+.task-drag-handle:hover {
+    opacity: 0.8;
+}
+
+.task-description {
+    flex: 1;
+}
+
+.stage-card[draggable="true"] {
+    cursor: grab;
+}
+
+.stage-card.dragging {
+    opacity: 0.5;
+}
+
+.stage-card.drop-above {
+    border-top: 3px solid var(--viking);
+}
+
+.stage-card.drop-below {
+    border-bottom: 3px solid var(--viking);
+}
+
+.stage-drag-handle {
+    cursor: grab;
+    opacity: 0.6;
+    user-select: none;
+}
+
+.stage-drag-handle:hover {
+    opacity: 1;
+}
+
+.stage-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stage-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
 .stage-add-task {
     display: flex;
     gap: 0.5rem;
