@@ -317,6 +317,12 @@ body {
     color: var(--viking);
 }
 
+.empty-state-image {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
 .empty-state h2 {
     color: var(--matisse);
     margin-bottom: 0.5rem;

@@ -45,7 +45,7 @@ export class MyListsView {
         this.container.innerHTML = `
             <div class="content-placeholder">
                 <div class="empty-state">
-                    <div class="empty-state-icon">${ICONS.suitcase}</div>
+                    <img src="img/Packy_Luggy-Looking.png" alt="Packy mascot" class="empty-state-image">
                     <h2>No Active Packing List</h2>
                     <p>Start a new trip or import an existing list</p>
 
